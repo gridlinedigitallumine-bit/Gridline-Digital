@@ -14,8 +14,8 @@ This project needs Vercel Functions and Routing Middleware for admin authenticat
 In Supabase:
 
 1. Enable Email sign-in and keep email confirmation on.
-2. In **Authentication → URL Configuration**, set Site URL to `https://gridline-digital-woad.vercel.app`.
-3. Add `https://gridline-digital-woad.vercel.app/**` to allowed redirect URLs. Add preview URLs only if you will use them for testing.
+2. In **Authentication → URL Configuration**, set Site URL to `https://gridlinedigital-nine.vercel.app`.
+3. Add `https://gridlinedigital-nine.vercel.app/**` to allowed redirect URLs. Add preview URLs only if you will use them for testing.
 4. Under **Authentication → Users**, invite/create the intended administrator and ensure the email is verified. Disable public sign-ups after the admin account exists.
 
 In Vercel, open **Project → Settings → Environment Variables** and add these for Production:
