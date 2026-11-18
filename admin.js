@@ -29,9 +29,9 @@
   };
 
   const PLAT = [
-    { k: 'meta', name: 'Meta (Facebook and Instagram)', field: 'Pixel ID', ph: '1234567890123456', hint: 'In Meta Events Manager, open your data source and copy the Pixel ID. It is 15 to 16 digits.' },
-    { k: 'tiktok', name: 'TikTok', field: 'Pixel ID', ph: 'C1ABCDEF2GHIJKLMNO', hint: 'In TikTok Events Manager, open Web events and copy the Pixel ID.' },
-    { k: 'google', name: 'Google (Ads and Analytics)', field: 'Tag ID', ph: 'AW-123456789 or G-ABCD123456', hint: 'Use the Google Ads tag (starts with AW-) or the Google Analytics ID (starts with G-).' }
+    { k: 'meta', name: 'Meta (Facebook and Instagram)', manager: 'Open Meta Events Manager', href: 'https://business.facebook.com/events_manager', field: 'Meta Pixel ID', ph: '1234567890123456', hint: 'In Events Manager, choose your Meta Pixel data source and copy its ID.' },
+    { k: 'tiktok', name: 'TikTok', manager: 'Open TikTok Ads Manager', href: 'https://ads.tiktok.com/', field: 'TikTok Pixel ID', ph: 'C1ABCDEF2GHIJKLMNO', hint: 'In TikTok Ads Manager, open Events / Web events and copy the Pixel ID.' },
+    { k: 'google', name: 'Google Ads / Analytics', manager: 'Open Google Ads', href: 'https://ads.google.com/', field: 'Google tag ID', ph: 'AW-123456789 or G-ABCD123456', hint: 'Use your Google Ads ID (AW-…) for ads conversions, or GA4 ID (G-…) for analytics.' }
   ];
   const chips = {}, errs = {}, inputs = {}, toggles = {};
   PLAT.forEach(p => {
@@ -41,6 +41,7 @@
     inputs[p.k] = h('input', { type: 'text', id: p.k + 'Id', placeholder: p.ph, autocomplete: 'off', spellcheck: 'false', maxlength: '40' });
     const kids = [
       h('div', { class: 'head' }, h('h2', {}, p.name), chips[p.k]),
+      h('a', { class: 'ext', href: p.href, target: '_blank', rel: 'noopener noreferrer' }, p.manager + ' ↗'),
       h('label', { class: 'check', for: p.k + 'On' }, toggles[p.k], 'Active on the website'),
       h('label', { for: p.k + 'Id' }, p.field), inputs[p.k], h('p', { class: 'hint' }, p.hint), errs[p.k]
     ];
