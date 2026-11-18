@@ -1,17 +1,40 @@
-# Vercel migration checklist
+# Vercel deployment and Supabase login
 
-This folder is configured as a static Vercel site. The public pages can deploy with no build command. The admin area remains closed until Supabase Auth has been configured and the login/session endpoint has been implemented.
+This project needs Vercel Functions and Routing Middleware for admin authentication. A static-only drag-and-drop upload will serve the website files but will not run the login endpoints or route gate. Connect this GitHub repository to the existing Vercel project and deploy the source.
 
-## Deploy the public site
+## Connect the GitHub repository to Vercel
 
-1. Sign in to Vercel and create a project from this folder or its Git repository.
-2. Choose **Other** as the framework preset, leave the build command blank, and use `.` as the output directory.
-3. Check the Vercel plan terms. Hobby is for personal, non-commercial use; use Pro/Enterprise if the site is for a business or client.
-4. Deploy a preview first and inspect the home page, images, contact links, and mobile layout.
-5. Assign a domain and promote to production only after reviewing the preview.
+1. In Vercel, open the Gridline project and choose **Settings → Git** (or **Add New → Project** if the uploaded project cannot be connected in place).
+2. Connect `gridlinedigitallumine-bit/Gridline-Digital` and select `main` as the production branch.
+3. Choose **Other** as the framework preset, with no build command and `.` as the output directory. Keep the repository root as the project root.
+4. Deploy. The deployment must include `middleware.ts`, `api/auth/`, `package.json`, and `vercel.json`.
 
-## Before enabling admin login
+## Connect Supabase
 
-Follow the security setup in `SECURITY.md`. Do not remove the middleware gate to make the login appear to work. Login is intentionally disabled until the secure Supabase cookie flow and admin account are ready. Never put a shared password or Supabase service-role key in client-side HTML or JavaScript.
+In Supabase:
 
-This deployment is independent of Netlify. It does not update or replace the current Netlify URL or its domain settings.
+1. Enable Email sign-in and keep email confirmation on.
+2. In **Authentication → URL Configuration**, set Site URL to `https://gridline-digital-woad.vercel.app`.
+3. Add `https://gridline-digital-woad.vercel.app/**` to allowed redirect URLs. Add preview URLs only if you will use them for testing.
+4. Under **Authentication → Users**, invite/create the intended administrator and ensure the email is verified. Disable public sign-ups after the admin account exists.
+
+In Vercel, open **Project → Settings → Environment Variables** and add these for Production:
+
+| Name | Value |
+| --- | --- |
+| `SUPABASE_URL` | Supabase Project URL |
+| `SUPABASE_ANON_KEY` | Supabase anon key or publishable key |
+| `ADMIN_EMAILS` | `gridlinedigitallumine@gmail.com` |
+
+For more than one administrator, separate verified addresses in `ADMIN_EMAILS` with commas. Never add a Supabase secret or service-role key. Save the variables and redeploy the project; they do not update an existing deployment.
+
+## Confirm the access gate
+
+After deployment, in a private browser window:
+
+1. `/admin` should send a signed-out visitor to `/login`.
+2. The invited, verified allowlisted admin should sign in and reach the dashboard.
+3. A different Supabase account should be denied.
+4. Test password recovery and sign-out.
+
+Do not remove the server-side allowlist or middleware to work around a failed sign-in. Check Supabase's allowed redirect URL, email verification, Vercel environment variables, and deployment logs instead.

@@ -1,28 +1,31 @@
 # Security and deployment notes
 
-## Current architecture
+## Architecture
 
-This is a static marketing site and browser-only admin utility. It has no database or server API for its tracking settings, so SQL injection is not currently applicable. The dashboard settings are stored in the administrator's browser and exported as `tracking-config.js` for manual deployment; they are not saved centrally.
+The marketing site is static. The admin dashboard configures ad tracking in the current administrator's browser and exports `tracking-config.js`; the settings are not saved to a server. There is no database query or SQL used by the website, so it has no SQL injection surface today.
 
-## Vercel migration status
+## Admin authentication
 
-The repository is prepared for a static Vercel deployment, but this migration is not live yet. Netlify Identity does not work as the Vercel authentication provider. The login page intentionally remains disabled until the new provider and its credentials are configured.
+- Vercel Routing Middleware protects `/admin`, `/admin.html`, and `/admin.js` before the static files are served.
+- Sign-in, password recovery, password update, and sign-out use same-origin Vercel Functions under `/api/auth/`.
+- Supabase access and refresh tokens are stored only in `Secure`, `HttpOnly`, `SameSite=Lax`, `__Host-` cookies. Browser JavaScript cannot read the tokens.
+- The middleware validates the current Supabase session through Auth and allows only email-confirmed addresses listed in the server-side `ADMIN_EMAILS` environment variable. Separate accounts can be listed with commas. No open registration is needed.
+- `SUPABASE_ANON_KEY` is the variable name used in code; a Supabase publishable key can be placed there. Never use a Supabase secret or service-role key in this project.
+- If Supabase Auth is unavailable, dashboard access fails closed.
 
-The `middleware.ts` route gate protects `/admin`, `/admin.html`, and `/admin.js`. It verifies the Supabase access token with Supabase Auth and checks the server-controlled `app_metadata.role` value. The admin page and script are denied unless all these checks pass. A client-side role claim or password is not used as an authorization boundary.
+## Required Supabase and Vercel configuration
 
-Required setup before opening the dashboard:
+1. In Supabase, enable Email provider sign-in and email confirmation. Disable public sign-ups after creating/inviting the administrator. Configure the Site URL and allowed redirect URLs for the Vercel production domain and any preview domain used for testing.
+2. In Supabase Authentication → Users, invite or create the admin account(s), and verify their email addresses.
+3. In Vercel Project Settings → Environment Variables, set `SUPABASE_URL`, `SUPABASE_ANON_KEY` (or the publishable key), and `ADMIN_EMAILS`. Apply them to Production and Preview as appropriate.
+4. Redeploy the Vercel project after adding the variables. Vercel must deploy from the repository/source so `api/` functions, `middleware.ts`, and `package.json` run. A static-only upload is not a functional authentication deployment.
+5. Verify in a private browser that anonymous and non-allowlisted users cannot fetch `/admin.html` or `/admin.js`; the verified admin can sign in, access the dashboard, reset their password, and sign out.
 
-1. Create a Supabase project and enable email/password authentication, email verification, and password recovery.
-2. Add the project's URL and public anon key as Vercel environment variables `SUPABASE_URL` and `SUPABASE_ANON_KEY`. Never put the Supabase service-role key in browser code or this repository.
-3. Implement the login/session exchange using Supabase Auth, storing the access token in a `Secure`, `HttpOnly`, `SameSite=Lax` cookie via a server endpoint. Do not place long-lived credentials in local storage.
-4. Invite the intended administrator and assign `app_metadata.role = "admin"` from a trusted server/admin tool. Users must not be able to set this field themselves.
-5. Configure a production domain and test that anonymous and non-admin requests cannot fetch `/admin.html` or `/admin.js`, while the invited admin can sign in, access the dashboard, recover their password, and sign out.
-
-The static marketing site can be published without enabling admin access, but the site owner must confirm Vercel plan eligibility: Hobby is restricted to personal, non-commercial use. If this is a client/business site, use a plan that permits commercial usage.
+Keep passwords, recovery links, access tokens, and service-role keys out of chat, source files, and Git. Pixel IDs are public identifiers, not secrets.
 
 ## Other protections
 
-- Security headers are configured in `vercel.json`.
-- Do not commit passwords, access tokens, or service-role keys.
-- Tracking IDs are public identifiers, not secrets.
-- The contact form opens WhatsApp in the browser; there is no server-side form handler or database to attack.
+- Security headers and a Content Security Policy are configured in `vercel.json`.
+- The contact form opens WhatsApp in the browser; there is no form backend or database to attack.
+- Supabase and Vercel authentication endpoints have provider-side protections and rate limits. Do not remove same-origin checks or admin email allowlisting.
+- Confirm the Vercel plan permits the site's use. Hobby is restricted to personal, non-commercial use.
