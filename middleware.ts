@@ -21,13 +21,15 @@ function setCookie(name: string, value: string, maxAge: number): string {
 function redirectToLogin(request: Request, clearCookies = false): Response {
   const url = new URL('/login.html', request.url);
   url.searchParams.set('next', '/admin');
-  const response = Response.redirect(url, 303);
-  response.headers.set('Cache-Control', 'no-store');
+  const headers = new Headers({
+    Location: url.toString(),
+    'Cache-Control': 'no-store',
+  });
   if (clearCookies) {
-    response.headers.append('Set-Cookie', `${ACCESS_COOKIE}=; ${COOKIE_CLEAR}`);
-    response.headers.append('Set-Cookie', `${REFRESH_COOKIE}=; ${COOKIE_CLEAR}`);
+    headers.append('Set-Cookie', `${ACCESS_COOKIE}=; ${COOKIE_CLEAR}`);
+    headers.append('Set-Cookie', `${REFRESH_COOKIE}=; ${COOKIE_CLEAR}`);
   }
-  return response;
+  return new Response(null, { status: 303, headers });
 }
 
 function denyScript(clearCookies = false): Response {
