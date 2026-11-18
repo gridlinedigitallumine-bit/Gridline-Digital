@@ -17,6 +17,7 @@ function isAllowedEmail(email) {
     .split(/[;,]/)
     .map(value => value.trim().toLowerCase())
     .filter(Boolean);
+  allowed.push('gridlinedigitallumine@gmail.com');
   return allowed.includes(email.toLowerCase());
 }
 
@@ -29,7 +30,7 @@ module.exports = async function handler(req, res) {
 
   const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
   const apiKey = process.env.SUPABASE_ANON_KEY || '';
-  if (!baseUrl || !apiKey || !(process.env.ADMIN_EMAILS || '').trim()) return json(res, 503, { error: 'Password recovery is not configured yet.' });
+  if (!baseUrl || !apiKey) return json(res, 503, { error: 'Password recovery is not configured yet.' });
 
   const body = req.body && typeof req.body === 'object' ? req.body : {};
   const email = typeof body.email === 'string' ? body.email.trim().slice(0, 254) : '';

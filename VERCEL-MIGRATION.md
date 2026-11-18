@@ -24,9 +24,8 @@ In Vercel, open **Project → Settings → Environment Variables** and add these
 | --- | --- |
 | `SUPABASE_URL` | Supabase Project URL |
 | `SUPABASE_ANON_KEY` | Supabase anon key or publishable key |
-| `ADMIN_EMAILS` | `gridlinedigitallumine@gmail.com` |
 
-For more than one administrator, separate verified addresses in `ADMIN_EMAILS` with commas. Never add a Supabase secret or service-role key. Save the variables and redeploy the project; they do not update an existing deployment.
+The primary admin email `gridlinedigitallumine@gmail.com` is already allowlisted by the server code; you do not need an `ADMIN_EMAILS` variable for that account. For additional administrators, add their verified emails to `ADMIN_EMAILS`, separated by commas. Never add a Supabase secret or service-role key. Save the variables and redeploy the project; they do not update an existing deployment.
 
 ## Confirm the access gate
 

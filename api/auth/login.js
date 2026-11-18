@@ -1,5 +1,6 @@
 const ACCESS_COOKIE = '__Host-gl_at';
 const REFRESH_COOKIE = '__Host-gl_rt';
+const PRIMARY_ADMIN_EMAIL = 'gridlinedigitallumine@gmail.com';
 
 function json(res, status, body) {
   res.statusCode = status;
@@ -25,6 +26,7 @@ function isAllowedAdmin(user) {
     .split(/[;,]/)
     .map(value => value.trim().toLowerCase())
     .filter(Boolean);
+  allowed.push(PRIMARY_ADMIN_EMAIL);
   return allowed.includes(String(user.email).toLowerCase());
 }
 
@@ -46,7 +48,7 @@ module.exports = async function handler(req, res) {
 
   const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
   const apiKey = process.env.SUPABASE_ANON_KEY || '';
-  if (!baseUrl || !apiKey || !(process.env.ADMIN_EMAILS || '').trim()) return json(res, 503, { error: 'Sign-in is not configured yet.' });
+  if (!baseUrl || !apiKey) return json(res, 503, { error: 'Sign-in is not configured yet.' });
 
   let body = req.body;
   if (typeof body === 'string') {

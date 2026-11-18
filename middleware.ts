@@ -2,6 +2,7 @@ import { next } from '@vercel/functions';
 
 const ACCESS_COOKIE = '__Host-gl_at';
 const REFRESH_COOKIE = '__Host-gl_rt';
+const PRIMARY_ADMIN_EMAIL = 'gridlinedigitallumine@gmail.com';
 const COOKIE_CLEAR = 'Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0';
 
 function readCookie(request: Request, name: string): string {
@@ -68,6 +69,7 @@ function isAllowedAdmin(user: any): boolean {
     .split(/[;,]/)
     .map(email => email.trim().toLowerCase())
     .filter(Boolean);
+  allowed.push(PRIMARY_ADMIN_EMAIL);
   return allowed.includes(String(user.email).toLowerCase());
 }
 
@@ -77,8 +79,7 @@ export default async function middleware(request: Request): Promise<Response> {
 
   const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
   const apiKey = process.env.SUPABASE_ANON_KEY || '';
-  const adminsConfigured = (process.env.ADMIN_EMAILS || '').trim().length > 0;
-  if (!baseUrl || !apiKey || !adminsConfigured) {
+  if (!baseUrl || !apiKey) {
     if (pathname === '/admin.js') return denyScript();
     return redirectToLogin(request);
   }
