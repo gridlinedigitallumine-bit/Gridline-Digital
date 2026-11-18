@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gridline Digital admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#082032;--navy:#2C394B;--slate:#334756;--mist:#D2D2D2;--coral:#FE4C29;--soft:#F7F8F9;--line:#E5E8EB;--muted:#65717C}
+*{box-sizing:border-box}body{margin:0;font-family:Montserrat,Arial,sans-serif;background:var(--soft);color:var(--ink);line-height:1.55;font-size:14px}
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+.side{background:var(--ink);color:#fff;padding:24px 16px;display:flex;flex-direction:column;gap:28px;position:sticky;top:0;height:100vh}
+.brand{display:flex;gap:11px;align-items:center;padding:0 8px}.brand svg{width:38px;height:38px}.brand b{font-size:16px;letter-spacing:-.04em;line-height:1.1;display:block}.brand small{display:block;color:#FF8A73;font-size:9px;letter-spacing:.3em;margin-top:4px;font-weight:700}
+nav{display:grid;gap:4px}nav a{color:#C9D1D7;text-decoration:none;padding:11px 12px;border-radius:4px;font-weight:600;font-size:13px;border-left:3px solid transparent}nav a:hover{background:var(--navy);color:#fff}nav a[aria-current=page]{background:var(--navy);color:#fff;border-left-color:var(--coral)}
+.side p{margin:auto 8px 0;font-size:11px;color:#9AA7B1}
+main{padding:40px min(5vw,56px) 72px;max-width:1060px;width:100%}
+h1{font-size:30px;letter-spacing:-.05em;margin:0 0 6px;line-height:1.15}h2{font-size:17px;letter-spacing:-.03em;margin:0}
+.lead{color:var(--muted);margin:0 0 28px;max-width:64ch}.view[hidden]{display:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.card{background:#fff;border:1px solid var(--line);border-radius:4px;padding:22px}.stack{display:grid;gap:16px}
+.stat b{display:block;font-size:30px;letter-spacing:-.05em;line-height:1.1}.stat span{color:var(--muted);font-size:12px}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:6px}
+.chip{font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;background:#EDEFF1;color:var(--slate);white-space:nowrap}.chip.ready,.chip.done{background:var(--ink);color:#fff}.chip.warn,.chip.host{background:#FFE9E4;color:#B72E12}
+label{font-weight:600;font-size:12px;display:block;margin:14px 0 6px}
+input[type=text]{width:100%;padding:12px 13px;border:1px solid #BCC3C9;border-radius:4px;font:inherit;background:#fff;color:var(--ink)}
+:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.check{display:flex;gap:10px;align-items:center;font-weight:600;margin:0;cursor:pointer}.check input{width:18px;height:18px;accent-color:var(--coral)}
+.hint{color:var(--muted);font-size:12px;margin:6px 0 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border:1px solid transparent;border-radius:4px;background:var(--coral);color:#fff;font:inherit;font-size:12px;font-weight:700;cursor:pointer}.btn:hover{background:#e83e1f}.btn.dark{background:var(--ink)}.btn.dark:hover{background:var(--slate)}.btn.outline{background:transparent;color:var(--ink);border-color:#BCC3C9}.btn.outline:hover{border-color:var(--coral);color:var(--coral)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+pre{background:var(--ink);color:#E8EDF1;padding:18px;border-radius:4px;overflow:auto;font-size:12px;line-height:1.6;margin:16px 0 0}
+.wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;color:var(--muted);font-weight:700}
+ol.steps{padding-left:20px;margin:12px 0 0;display:grid;gap:8px}a.ext{color:var(--coral);font-weight:700;text-decoration:none}a.ext:hover{text-decoration:underline}
+.note{font-size:12px;color:var(--slate);min-height:18px;margin:10px 0 0}
+@media(max-width:800px){.app{grid-template-columns:1fr}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px}nav{display:flex;flex-wrap:wrap}.side p{display:none}}
+</style></head>
+<body><div class="app">
+<aside class="side">
+<div class="brand"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M28 4H15C8.9 4 4 8.9 4 15v12h8V16c0-2.2 1.8-4 4-4h12V4Z" fill="#fff"/><path d="M20 20h24v13c0 6.1-4.9 11-11 11H20v-8h12c2.2 0 4-1.8 4-4v-4H20v-8Z" fill="#FE4C29"/><path d="M4 31h8v8H4zM14 31h8v8h-8zM4 41h8v3H4zM14 41h8v3h-8z" fill="#D2D2D2"/></svg><span><b>GRIDLINE</b><small>ADMIN</small></span></div>
+<nav aria-label="Admin"><a href="#overview">Overview</a><a href="#pixels">Pixels and ads</a><a href="#events">Tracked events</a><a href="#security">Security</a><a href="/login.html?logout=1">Sign out</a></nav>
+<p>Draft settings are saved in this browser only. Nothing changes on your live site until you upload the config file.</p>
+</aside>
+<main>
+<section class="view" id="overview" hidden>
+<h1>Overview</h1><p class="lead">Connect your ad accounts to the website, then check that each platform receives visits and enquiries.</p>
+<div class="stats">
+<div class="card stat"><b id="sConn">0 of 3</b><span>Ad platforms ready to publish</span></div>
+<div class="card stat"><b id="sConsent">On</b><span>Cookie consent banner</span></div>
+<div class="card stat"><b>3</b><span>Events sent to each platform</span></div>
+</div>
+<div class="card"><h2>Before you run ads</h2>
+<ol class="steps"><li>Create a pixel or tag in each ads account (Meta, TikTok, Google).</li><li>Open <a class="ext" href="#pixels">Pixels and ads</a> and paste each ID.</li><li>Download <b>tracking-config.js</b> and replace the same file on your website.</li><li>Check each platform’s test tool: <a class="ext" href="https://business.facebook.com/events_manager" target="_blank" rel="noopener noreferrer">Meta Events Manager</a>, <a class="ext" href="https://ads.tiktok.com" target="_blank" rel="noopener noreferrer">TikTok Ads</a>, <a class="ext" href="https://tagassistant.google.com" target="_blank" rel="noopener noreferrer">Google Tag Assistant</a>.</li><li>Add a privacy policy page to your site, then start your campaigns.</li></ol></div>
+</section>
+
+<section class="view" id="pixels" hidden>
+<h1>Pixels and ads</h1><p class="lead">Turn on each platform and paste its ID. Pixel IDs are public, so they are safe to store here. Never paste passwords or access tokens.</p>
+<div class="stack" id="cards"></div>
+<div class="card" style="margin-top:16px"><div class="check-wrap"><label class="check"><input type="checkbox" id="consent"> Ask visitors for cookie consent before loading pixels (recommended)</label><p class="hint">Many regions require consent before advertising cookies are set. Keep this on unless you have advice that you can turn it off.</p></div></div>
+<div class="card" style="margin-top:16px"><h2>Publish changes</h2>
+<ol class="steps"><li>Download the file below.</li><li>Replace <b>tracking-config.js</b> on your website with it.</li><li>Deploy the site. Changes go live after the deploy.</li></ol>
+<div class="row"><button class="btn" id="dl" type="button">Download tracking-config.js</button><button class="btn outline" id="cp" type="button">Copy code</button><label class="btn outline" for="imp" style="margin:0">Import existing file</label><input id="imp" type="file" accept=".js,.json,.txt" hidden></div>
+<p class="note" id="msg" role="status"></p><pre id="out" tabindex="0" aria-label="Generated tracking config"></pre></div>
+</section>
+
+<section class="view" id="events" hidden>
+<h1>Tracked events</h1><p class="lead">The site sends these events once a visitor allows cookies. Use them to build audiences and measure ad results.</p>
+<div class="card wrap"><table><thead><tr><th>When it happens</th><th>Meta</th><th>TikTok</th><th>Google</th></tr></thead><tbody>
+<tr><td>A visitor opens any page</td><td>PageView</td><td>page</td><td>page_view</td></tr>
+<tr><td>A visitor sends the project enquiry form</td><td>Lead</td><td>SubmitForm</td><td>generate_lead, plus a conversion if you add a label</td></tr>
+<tr><td>A visitor taps a WhatsApp link</td><td>Contact</td><td>Contact</td><td>contact</td></tr></tbody></table></div>
+</section>
+
+<section class="view" id="security" hidden>
+<h1>Security</h1><p class="lead">Your 20-point checklist, with what is covered in the code and what you still do on your hosting account.</p>
+<div class="card wrap"><table><thead><tr><th>Item</th><th>Status</th><th>Notes</th></tr></thead><tbody id="secRows"></tbody></table></div>
+</section>
+</main></div>
+<script src="admin.js"></script>
+</body></html>
