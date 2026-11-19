@@ -77,7 +77,7 @@ export default async function middleware(request: Request): Promise<Response> {
   const pathname = new URL(request.url).pathname.toLowerCase();
   if (!['/admin', '/admin.html', '/admin.js'].includes(pathname)) return next();
 
-  const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
+  const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/rest\/v1\/?$/i, '').replace(/\/+$/, '');
   const apiKey = process.env.SUPABASE_ANON_KEY || '';
   if (!baseUrl || !apiKey) {
     if (pathname === '/admin.js') return denyScript();

@@ -30,7 +30,7 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
+  const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/rest\/v1\/?$/i, '').replace(/\/+$/, '');
   const apiKey = process.env.SUPABASE_ANON_KEY || '';
   const accessToken = getCookie(req, ACCESS_COOKIE);
   if (baseUrl && apiKey && accessToken) {

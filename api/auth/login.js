@@ -46,7 +46,7 @@ module.exports = async function handler(req, res) {
   }
   if (!sameOrigin(req)) return json(res, 403, { error: 'Request not allowed.' });
 
-  const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
+  const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/rest\/v1\/?$/i, '').replace(/\/+$/, '');
   const apiKey = process.env.SUPABASE_ANON_KEY || '';
   if (!baseUrl || !apiKey) return json(res, 503, { error: 'Sign-in is not configured yet.' });
 

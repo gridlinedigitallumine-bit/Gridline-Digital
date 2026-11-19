@@ -28,7 +28,7 @@ module.exports = async function handler(req, res) {
   }
   if (!sameOrigin(req)) return json(res, 403, { error: 'Request not allowed.' });
 
-  const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
+  const baseUrl = (process.env.SUPABASE_URL || '').replace(/\/rest\/v1\/?$/i, '').replace(/\/+$/, '');
   const apiKey = process.env.SUPABASE_ANON_KEY || '';
   if (!baseUrl || !apiKey) return json(res, 503, { error: 'Password recovery is not configured yet.' });
 
@@ -42,8 +42,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const site = `${(req.headers['x-forwarded-proto'] || 'https').split(',')[0].trim()}://${(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim()}`;
-    const redirectTo = new URL('/login.html?recovery=1', site).toString();
+    const redirectTo = 'https://gridlinedigital-nine.vercel.app/login.html?recovery=1';
     const result = await fetch(`${baseUrl}/auth/v1/recover?redirect_to=${encodeURIComponent(redirectTo)}`, {
       method: 'POST',
       headers: { apikey: apiKey, 'Content-Type': 'application/json' },
